@@ -1,6 +1,7 @@
 from pynput import keyboard
 import socket
 from math import inf
+from time import sleep
 
 class ClientUI:
     def __init__(self,socket):
@@ -16,6 +17,9 @@ class ClientUI:
             k = key.char  # single-char keys
         except:
             k = key.name  # other keys
+            print("Weird key pressed: " + k + "\nPlease enter new key: ")
+
+            return True
         if k in ['0','1', '2', '3', '4']:  # keys of interest
             # self.keys.append(k)  # store it in global-like variable
             k_int = int(k)
@@ -23,7 +27,10 @@ class ClientUI:
                 self.send_data("-1")
             else:
                 self.send_data(k_int)
-            return True
+        
+        print('Key pressed: ' + key.char + "\nPlease enter new key: ")
+        
+        return True
 
 
 # Setup dict of indices to resistances
@@ -42,6 +49,9 @@ ui = ClientUI(sock)
 listener = keyboard.Listener(on_press=ui.on_press)
 listener.start()  # start to listen on a separate thread
 
-
+print("Please enter key: ")
+while True:
+    sleep(60)
+    print("Still running...\n")
 
 
