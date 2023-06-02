@@ -2,29 +2,35 @@ import gpiozero
 import socket
 import time
 
-# Function to activate the relay
 
-def activate_relay(relay_num):
-    relay = gpiozero.LED(relay_num)
-    relay.on()
-    print("Turn on relay ", relay_num)
-    return
+class Relay:
+    def __init__(self,relay_dict):
+        self.relay_dict = relay_dict
+        self.relays = []    
 
-# Function to deactivate the relay
-def deactivate_relay(relay_num):
-    relay = gpiozero.LED(relay_num)
-    relay.off()
-    print("Turn off relay ", relay_num)
-    return
+        # committing a sin by putting a loop in the constructor
+        for d in relay_dict:
+            self.relays.append(gpiozero.LED(relay_dict[d]))
 
-# Function to check the status of the relay
+    # Function to activate the relay
+    def activate_relay(self,relay_num):
+        self.relays[relay_num].on()
+        print("Turn on relay ", self.relay_dict[relay_num])
+        return
 
-def check_relay(relay_num):
-    relay = gpiozero.LED(relay_num)
-    return relay.value
+    # Function to deactivate the relay
+    def deactivate_relay(self,relay_num):
+        self.relays[relay_num].off()
+        print("Turn on relay ", self.relay_dict[relay_num])
+        return
+
+    # Function to check the status of the relay
+    def check_relay(self,relay_num):
+        return self.relays[relay_num].value
 
 # List of circuits and their resistances
 relay_dict = {0:14,1:15,2:18,3:23}#4:24,5:25,6:8,7:7,8:12,9:16,10:20,11:21}
+relay = Relay(relay_dict)
 # 2700 ohm - GPIO 14
 # 3333 ohm - GPIO 15
 # 5000 ohm - GPIO 18
@@ -36,10 +42,10 @@ active_relay = 0
 
 # deactivate all relays for good measure
 for d in relay_dict:
-    deactivate_relay(relay_dict[d])
+    relay.deactivate_relay(relay_dict[d])
 
 # activate default relay
-activate_relay(relay_dict[0])
+relay.activate_relay(relay_dict[0])
 
 # Open port
 udp_ip = "10.0.0.158"
@@ -61,15 +67,14 @@ while time.time() - t_start < 60*20:
         data = -1
     #  switch by port value
     if data<0:
-        deactivate_relay(relay_dict[active_relay])
+        relay.deactivate_relay(active_relay)
     elif data>=0 and data<=3:
         if data == active_relay:
             pass
-        deactivate_relay(relay_dict[active_relay])
-        activate_relay(relay_dict[data])
-        print("Deactivated: ", relay_dict[active_relay], " and activated: ",relay_dict[data])
+        relay.deactivate_relay(active_relay)
+        relay.activate_relay(data)
         active_relay = data
 
 for d in relay_dict:
-    deactivate_relay(relay_dict[d])
+    relay.deactivate_relay(d)
 
