@@ -7,12 +7,14 @@ import time
 def activate_relay(relay_num):
     relay = gpiozero.LED(relay_num)
     relay.on()
+    print("Turn on relay ", relay_num)
     return
 
 # Function to deactivate the relay
 def deactivate_relay(relay_num):
     relay = gpiozero.LED(relay_num)
     relay.off()
+    print("Turn off relay ", relay_num)
     return
 
 # Function to check the status of the relay
@@ -34,13 +36,13 @@ active_relay = 0
 
 # deactivate all relays for good measure
 for d in relay_dict:
-    deactivate_relay(list(d.values())[0])
+    deactivate_relay(relay_dict[d])
 
 # activate default relay
 activate_relay(relay_dict[0])
 
 # Open port
-udp_ip = "127.0.0.1"
+udp_ip = "10.0.0.158"
 udp_port = 1337
 
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -48,10 +50,11 @@ sock.bind((udp_ip,udp_port))
 
 #  begin loop
 t_start = time.time()
-while time.time()-t_start < 60*10:
+while time.time() - t_start < 60*20:
     #  read port
     data, addr = sock.recvfrom(8)
     data = data.decode('utf-8')
+    print("Received: ", data)
     try:
         data = int(data)
     except:
@@ -64,5 +67,9 @@ while time.time()-t_start < 60*10:
             pass
         deactivate_relay(relay_dict[active_relay])
         activate_relay(relay_dict[data])
+        print("Deactivated: ", relay_dict[active_relay], " and activated: ",relay_dict[data])
+        active_relay = data
 
+for d in relay_dict:
+    deactivate_relay(relay_dict[d])
 
