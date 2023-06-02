@@ -15,13 +15,13 @@ class Relay:
     # Function to activate the relay
     def activate_relay(self,relay_num):
         self.relays[relay_num].on()
-        print("Turn on relay ", self.relay_dict[relay_num])
+        print("Turn on pin ", self.relay_dict[relay_num])
         return
 
     # Function to deactivate the relay
     def deactivate_relay(self,relay_num):
         self.relays[relay_num].off()
-        print("Turn on relay ", self.relay_dict[relay_num])
+        print("Turn off pin ", self.relay_dict[relay_num])
         return
 
     # Function to check the status of the relay
