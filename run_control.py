@@ -42,10 +42,10 @@ active_relay = 0
 
 # deactivate all relays for good measure
 for d in relay_dict:
-    relay.deactivate_relay(relay_dict[d])
+    relay.deactivate_relay(d)
 
 # activate default relay
-relay.activate_relay(relay_dict[0])
+relay.activate_relay(0)
 
 # Open port
 udp_ip = "10.0.0.158"
