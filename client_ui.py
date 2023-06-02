@@ -8,6 +8,7 @@ class ClientUI:
         self.socket = socket
 
     def send_data(self,data):
+        data = str(data)
         self.socket.sendto(data.encode('utf-8'),("10.0.0.158",1337))
     
     def on_press(self,key):
@@ -40,7 +41,7 @@ resistances = {0:2700,1:3333,2:5000,3:10000,4:inf}
 udp_ip = "127.0.0.1"
 udp_port = 1337
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-sock.bind((udp_ip,udp_port))
+#sock.bind((udp_ip,udp_port))
 
 ui = ClientUI(sock)
 # Wait for input
