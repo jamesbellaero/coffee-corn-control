@@ -11,3 +11,8 @@ Poplite popcorn popper: https://www.amazon.com/gp/product/B00006IUWA/ref=ppx_yo_
 5v Relay Module: https://www.amazon.com/gp/product/B09G6H7JDT/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1
 
 I could probably make a wiring diagram, but I'm lazy. If you want to know how to not electrocute yourself, create an issue.
+
+## Python non-built-in libraries used:
+gpiozero
+PyMLX90614
+smbus
